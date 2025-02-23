@@ -1,7 +1,72 @@
+import { Lock, UserRound } from "lucide-react";
+import BreadCrumb from "../components/BreadCrumb";
+import Meta from "../components/Meta";
+import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import useAuthStore from "../store/authUser";
+
 function LoginPage() {
-  return (
-    <div>LoginPage</div>
-  )
+    
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const { login, isLoggingIn } = useAuthStore()
+    const navigate = useNavigate()
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+
+        const success = await login({ email, password });
+
+        if (success) {
+            navigate("/"); // ✅ Chỉ chuyển hướng nếu đăng ký thành công
+        }
+    }
+    
+    return (
+        <>
+            <Meta title="Login" />
+            <BreadCrumb />
+            <div className="flex items-start justify-center bg-gray-200 min-h-[80vh] p-4">
+                <div className="bg-white rounded-md py-4 px-6 w-[26rem] mt-4">
+                    <h1 className="text-center text-3xl font-medium">Login</h1>
+                    <form className="flex flex-col gap-3 mt-4" onSubmit={handleLogin}>
+                        <div className="relative">
+                            <UserRound className="absolute right-0 top-0 transform -translate-x-3 translate-y-1/2 size-6 " />
+                            <input type="text" className="peer p-4 w-full bg-gray-200 rounded-md" 
+                                id="email"
+                                name="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
+                            <label htmlFor="email" className={`absolute left-4 transition-all duration-300 font-medium text-gray-400  ${email ? 'text-xs top-0.5' : 'top-4 peer-focus:text-xs peer-focus:top-0.5'}`}>Email</label>
+                        </div>
+                        <div className="relative">
+                            <Lock className="absolute right-0 top-0 transform -translate-x-3 translate-y-1/2 size-6" />
+                            <input type="password" className="peer p-4 w-full bg-gray-200 rounded-md"
+                                id="password"
+                                name="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                            <label htmlFor="password" className={`absolute left-4 transition-all duration-300 font-medium text-gray-400 ${password ? 'text-xs top-0.5' : 'top-4 peer-focus:text-xs peer-focus:top-0.5'}`}>Password</label>
+                        </div>
+                        <div className="flex items-center gap-1">
+                            <input type="checkbox" className="cursor-pointer" />
+                            <label className="text-md">Remember Me</label>
+                        </div>
+                        <button className="text-white bg-orange-400 rounded-md py-2 px-4 hover:opacity-90" disabled={isLoggingIn}>{isLoggingIn ? "Loading..." : "Login"}</button>
+                        <div className="text-center">
+                            <Link to="/account/reset-password" className="text-blue-600 hover:underline underline-offset-2">Forgot password?</Link>
+                            <span className="block">{"Don't have an account? "}<Link to="/account/signup" className="text-blue-600 hover:underline underline-offset-2">Sign up</Link></span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </>
+    )
 }
 
 export default LoginPage
