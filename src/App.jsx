@@ -17,7 +17,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy"
 import TermOfServices from "./pages/TermOfServices"
 import ShippingPolicy from "./pages/ShippingPolicy"
 import RefundPolicy from "./pages/RefundPolicy"
-import DetailProduct from "./pages/DetailProduct"
+import DetailProductPage from "./pages/DetailProductPage"
 import DetailBlog from "./pages/DetailBlog"
 import NotFound404 from "./pages/NotFound404"
 import Cart from "./pages/Cart"
@@ -35,24 +35,27 @@ import AddEditBrand from "./pages/admin/AddEditBrand"
 import ManageBrand from "./pages/admin/ManageBrand"
 import LoginAdmin from "./pages/admin/LoginAdmin"
 import Profile from "./pages/admin/Profile"
+import ManageCoupon from "./pages/admin/ManageCoupon"
+import AddEditCategory from "./pages/admin/AddEditCategory"
+import Product_Category from "./pages/admin/Product_Category"
+import ManageProduct from "./pages/admin/ManageProduct"
+import AddEditProduct from "./pages/admin/AddEditProduct"
 //Import Components
 import Navbar from "./components/Navbar"
 import Footer from "./components/Footer"
 
 import "./App.css"
 import { Toaster } from "react-hot-toast"
+import AddEditCoupon from "./pages/admin/AddEditCoupon"
 
 function App() {
     const { user, isCheckingAuth, authCheck } = useAuthStore()
     const location = useLocation()
     const isAdminRoute = location.pathname.startsWith("/admin");
+    const isAdmin = user?.role === "admin";
 
     useEffect(() => {
-        if (isAdminRoute) {
-            authCheck("admin");
-        } else {
-            authCheck("user");
-        }
+        authCheck(isAdminRoute ? "admin" : "user");
     }, [isAdminRoute, authCheck]);
 
     if (isCheckingAuth) {
@@ -81,40 +84,55 @@ function App() {
                 <Route path="/term-of-services" element={<TermOfServices />} />
                 <Route path="/shipping-policy" element={<ShippingPolicy />} />
                 <Route path="/refund-policy" element={<RefundPolicy />} />
+                <Route path="/product" element={<Navigate to="/store" replace />} />
                 <Route path="/store" element={<OurStore />} />
+                <Route path="/search" element={<OurStore />} />
+                <Route path="/:category" element={<OurStore />} />
                 <Route path="/blogs" element={<Blog />} />
                 <Route path="/account/login" element={<LoginPage />} />
                 <Route path="/account/signup" element={<SignupPage />} />
                 <Route path="/account/reset-password" element={<ResetPasswordPage />} />
-                <Route path="/products/1" element={<DetailProduct />} />
-                <Route path="/blogs/1" element={<DetailBlog />} />
+                <Route path="/product/:slug" element={<DetailProductPage />} />
+                <Route path="/blog/1" element={<DetailBlog />} />
 
                 {/* Admin Routes */}
                 {/* Dashboard */}
-                <Route path="/admin" element={!user ? <Navigate to="/admin/login" /> : <MainLayout Element={ Dashboard } />} />
+                <Route path="/admin" element={!isAdmin ? <Navigate to="/admin/login" /> : <MainLayout Element={ Dashboard } />} />
                 {/* Profile */}
-                <Route path="/admin/profile" element={!user ? <Navigate to="/admin/login" /> : <MainLayout Element={ Profile } />} />
+                <Route path="/admin/profile" element={!isAdmin ? <Navigate to="/admin/login" /> : <MainLayout Element={ Profile } />} />
                 {/* Login */}
-                <Route path="/admin/login" element={!user ? <LoginAdmin /> : <Navigate to="/admin" />} />
+                <Route path="/admin/login" element={isAdmin ? <Navigate to="/admin" /> : <LoginAdmin />} />
                 {/* Customer */}
-                <Route path="/admin/customers" element={!user ? <Navigate to="/admin/login" /> : <MainLayout Element={ Customers } />} />
+                <Route path="/admin/customers" element={!isAdmin ? <Navigate to="/admin/login" /> : <MainLayout Element={ Customers } />} />
                 {/* Calendar */}
-                <Route path="/admin/calendar" element={!user ? <Navigate to="/admin/login" /> : <MainLayout Element={ CalendarPage } />} />
+                <Route path="/admin/calendar" element={!isAdmin ? <Navigate to="/admin/login" /> : <MainLayout Element={ CalendarPage } />} />
                 {/* Blog */}
-                <Route path="/admin/blogs" element={!user ? <Navigate to="/admin/login" /> : <MainLayout Element={ ManageBlog } />} />
-                <Route path="/admin/blogs/add" element={!user ? <Navigate to="/admin/login" /> : <MainLayout Element={ AddBlog } />} />
+                <Route path="/admin/blogs" element={!isAdmin ? <Navigate to="/admin/login" /> : <MainLayout Element={ ManageBlog } />} />
+                <Route path="/admin/blogs/add" element={!isAdmin ? <Navigate to="/admin/login" /> : <MainLayout Element={ AddBlog } />} />
                 {/* Blog Category */}
-                <Route path="/admin/blogs-category/add" element={!user ? <Navigate to="/admin/login" /> : <MainLayout Element={ AddBlog_Category } />} />
-                <Route path="/admin/blogs-category" element={!user ? <Navigate to="/admin/login" /> : <MainLayout Element={ Blog_Category } />} />
+                <Route path="/admin/blogs-category/add" element={!isAdmin ? <Navigate to="/admin/login" /> : <MainLayout Element={ AddBlog_Category } />} />
+                <Route path="/admin/blogs-category" element={!isAdmin ? <Navigate to="/admin/login" /> : <MainLayout Element={ Blog_Category } />} />
                 {/* Brand */}
-                <Route path="/admin/brand/add" element={!user ? <Navigate to="/admin/login" /> : <MainLayout Element={ AddEditBrand } />} />
-                <Route path="/admin/brand/edit/:id" element={!user ? <Navigate to="/admin/login" /> : <MainLayout Element={ AddEditBrand } />} />
-                <Route path="/admin/brand" element={!user ? <Navigate to="/admin/login" /> : <MainLayout Element={ ManageBrand } />} />
+                <Route path="/admin/brand/add" element={!isAdmin ? <Navigate to="/admin/login" /> : <MainLayout Element={ AddEditBrand } />} />
+                <Route path="/admin/brand/edit/:id" element={!isAdmin ? <Navigate to="/admin/login" /> : <MainLayout Element={ AddEditBrand } />} />
+                <Route path="/admin/brand" element={!isAdmin ? <Navigate to="/admin/login" /> : <MainLayout Element={ ManageBrand } />} />
+                {/* Coupon */}
+                <Route path="/admin/coupon" element={!isAdmin ? <Navigate to="/admin/login" /> : <MainLayout Element={ ManageCoupon } />} />
+                <Route path="/admin/coupon/add" element={!isAdmin ? <Navigate to="/admin/login" /> : <MainLayout Element={ AddEditCoupon } />} />
+                <Route path="/admin/coupon/edit/:id" element={!isAdmin ? <Navigate to="/admin/login" /> : <MainLayout Element={ AddEditCoupon } />} />
+                {/* Product Category */}
+                <Route path="/admin/product-category/add" element={!isAdmin ? <Navigate to="/admin/login" /> : <MainLayout Element={ AddEditCategory } />} />
+                <Route path="/admin/product-category/edit/:id" element={!isAdmin ? <Navigate to="/admin/login" /> : <MainLayout Element={ AddEditCategory } />} />
+                <Route path="/admin/product-category" element={!isAdmin ? <Navigate to="/admin/login" /> : <MainLayout Element={ Product_Category } />} />
+                {/* Product */}
+                <Route path="/admin/product/add" element={!isAdmin ? <Navigate to="/admin/login" /> : <MainLayout Element={ AddEditProduct } />} />
+                <Route path="/admin/product/edit/:id" element={!isAdmin ? <Navigate to="/admin/login" /> : <MainLayout Element={ AddEditProduct } />} />
+                <Route path="/admin/product" element={!isAdmin ? <Navigate to="/admin/login" /> : <MainLayout Element={ ManageProduct } />} />
             </Routes>
             {!isAdminRoute && <Footer />}
             <Toaster />
         </>
     )
-};
+};  
 
 export default App

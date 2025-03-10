@@ -89,26 +89,36 @@ function Customers(){
                     title: 'No.',
                     dataIndex: 'no',
                     key: 'no',
+                    align: 'center',
+                    className: 'text-lg'
                 },
                 {
                     title: 'Name',
                     dataIndex: 'name',
                     key: 'name',
+                    align: 'center',
+                    className: 'text-lg'
                 },
                 {
                     title: 'Email',
                     dataIndex: 'email',
                     key: 'email',
+                    align: 'center',
+                    className: 'text-lg'
                 },
                 {
                     title: 'Orders',
                     dataIndex: 'orders',
                     key: 'orders',
+                    align: 'center',
+                    className: 'text-lg'
                 },
                 {
                     title: 'Total',
                     dataIndex: 'total',
                     key: 'total',
+                    align: 'center',
+                    className: 'text-lg'
                 },
             ],
         };

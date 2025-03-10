@@ -1,6 +1,6 @@
 import { Search } from "lucide-react"
 import { Link } from "react-router-dom"
-import { Table, message } from "antd"
+import { Table } from "antd"
 import { useEffect, useState } from "react"
 import axios from "axios"
 import Config from "../../envVars"
@@ -43,7 +43,7 @@ function ManageBrand() {
                 setBrands(response.data.brands)
             } catch (error) {
                 console.error("Error fetching brands:", error)
-                message.error("Failed to load brands. Please try again later.")
+                toast.error("Failed to load brands. Please try again later.")
             } finally {
                 setLoading(false)
             }

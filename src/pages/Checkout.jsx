@@ -1,6 +1,9 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import useAuthStore from "../store/authUser";
+import Config from "../envVars";
+import { formatPriceWithDollar } from "../utils/formattedFunction";
 
 function Checkout(){
     const [address, setAddress] = useState()
@@ -11,6 +14,7 @@ function Checkout(){
     const [city, setCity] = useState()
     const [state, setState] = useState()
     const [zip, setZip] = useState()
+    const {user} = useAuthStore()
 
     return(
         <div className="flex lg:flex-row flex-col-reverse">
@@ -143,49 +147,38 @@ function Checkout(){
             </div>
             <div className="lg:w-[40vw] w-full bg-gray-100 flex justify-center lg:justify-start">
                 <div className="w-[32rem] lg:ml-10 p-4 pb-10 mt-10 flex flex-col">
-                    <div className="flex flex-col gap-4 pb-6 border-b-2 border-gray-300">
-                        <div className="flex items-center gap-4">
-                            <div className="min-w-16 h-16 relative">
-                                <img src="/images/iphone.jpg" className="size-full" />
-                                <div className="flex items-center justify-center absolute translate-x-1/3 -translate-y-1/2 text-white w-6 h-6 top-0 right-0 bg-black opacity-50 text-xs rounded-full">1
+                    <div className="flex flex-col gap-4 py-6 border-b-2 border-gray-300 overflow-y-auto h-[24rem] scrollbar-hide">
+                        {user?.cart.items.map((item, index) => (
+                        <div key={index} className="flex items-center gap-4">
+                            <Link to={`/product/` + item.product.slug} className="min-w-16 h-16 relative">
+                                <img src={`${Config.BACKEND_URL}/images/` + item?.product.images.find(img => img.type=="thumbnail").path} className="size-full object-cover" />
+                                <div className="flex items-center justify-center absolute translate-x-1/3 -translate-y-1/2 text-white w-6 h-6 top-0 right-0 bg-black opacity-50 text-xs rounded-full">{item.quantity}
                                 </div>
-                            </div>
-                            <div className="flex items-center gap-2">
+                            </Link>
+                            <div className="flex items-center w-full justify-between gap-2">
                                 <div className="flex flex-col gap-1">
-                                    <Link>Honor T1 7.0 1 GB RAM 8 GB ROM 7 inch with Wi-fi+3G Tablet</Link>
+                                    <Link className="text-lg" to={`/product/` + item.product.slug}>{item.product.name}</Link>
+                                    <span>{formatPriceWithDollar(item.product.price)}</span>
                                     <span className="text-gray-400">S / Black</span>
                                 </div>
-                                <span>$100.00</span>
+                                <span className="text-xl text-orange-500">{formatPriceWithDollar(item.price)}</span>
                             </div>
                         </div>
-                        <div className="flex items-center gap-4">
-                            <div className="min-w-16 h-16 relative">
-                                <img src="/images/iphone.jpg" className="size-full" />
-                                <div className="flex items-center justify-center absolute translate-x-1/3 -translate-y-1/2 text-white w-6 h-6 top-0 right-0 bg-black opacity-50 text-xs rounded-full">1
-                                </div>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <div className="flex flex-col gap-1">
-                                    <Link>Honor T1 7.0 1 GB RAM 8 GB ROM 7 inch with Wi-fi+3G Tablet</Link>
-                                    <span className="text-gray-400">S / Black</span>
-                                </div>
-                                <span>$100.00</span>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                     <div className="py-6 border-b-2 border-gray-300">
                         <div className="flex justify-between items-center">
                             <h3 className="text-gray-400">Subtotal</h3>
-                            <span className="font-medium">$200.00</span>
+                            <span className="font-medium">{formatPriceWithDollar(user?.cart.total)}</span>
                         </div>
                         <div className="flex justify-between items-center mt-4">
                             <h3 className="text-gray-400">Shipping</h3>
-                            <span className="font-medium">$19.00</span>
+                            <span className="font-medium">Free</span>
                         </div>
                     </div>
                     <div className=" flex justify-between items-center py-6">
                         <h3 className="font-medium text-lg">Total</h3>
-                        <span className="text-green-500 text-xl font-medium">$219.00</span>
+                        <span className="text-green-500 text-xl font-medium">{formatPriceWithDollar(user?.cart.total)}</span>
                     </div>
                 </div>
             </div>

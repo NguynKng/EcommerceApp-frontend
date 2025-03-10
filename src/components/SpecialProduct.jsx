@@ -1,18 +1,18 @@
 import { Link } from "react-router-dom";
 import { Heart, Star } from "lucide-react";
 import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import Config from "../envVars";
+import useAuthStore from "../store/authUser";
+import { formatPriceWithDollar } from "../utils/formattedFunction";
+import { handleAddWishList } from "../utils/handleFunction";
 
-function SpecialProduct() {
-    const [isLiked, setIsLiked] = useState(false);
+function SpecialProduct({ product }) {
+    const { user } = useAuthStore();
     
     const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 0, seconds: 0 });
 
     const salesProgress = (50/ 100) * 100;
-
-    const toggleLike = (e) => {
-        e.preventDefault(); // Prevents navigating when clicking the heart
-        setIsLiked(!isLiked);
-    };
 
     useEffect(() => {
         // Set the target time once when the component mounts
@@ -41,22 +41,29 @@ function SpecialProduct() {
     }
 
     return (
-        <Link className="w-[28rem] rounded-md bg-white flex-none p-2">
+        <Link to={"/product/" + product?.slug} className="w-[28rem] rounded-md bg-white flex-none p-2">
             <div className="flex">
                 <div className="relative w-60 h-52">
-                    <img src="/images/iphone.jpg" className="size-full rounded-md p-4 object-cover" />
-                    <Heart className={`absolute top-2 right-2 size-4 cursor-pointer ${isLiked ? "fill-red-500 text-red-500" : "fill-none text-gray-500"}`} onClick={toggleLike} />
+                    <img src={`${Config.BACKEND_URL}/images/` + product?.images.find(img => img.type === "thumbnail").path} className="size-full rounded-md p-4 object-cover" />
+                    <Heart className={`absolute top-2 right-2 size-4 cursor-pointer ${user?.wishlist.find((item) => item._id === product._id) ? "fill-red-500" : "text-gray-500"}`} 
+                        onClick={(e) => {
+                            e.preventDefault(); // ⛔ Prevent Link navigation // ⛔ Stop event bubbling
+                            handleAddWishList(product?._id, user);
+                        }}
+                    />
+                    {product?.discount > 0 && (
                     <div className="absolute top-2 left-2 bg-orange-400 rounded-xl py-1 px-2">
-                        <h6 className="text-black text-xs">-33%</h6>
+                        <p className="text-black text-xs">-{product?.discount}%</p>
                     </div>
+                    )}
                     <div className="flex justify-evenly">
                         <img src="/images/iphone.jpg" className="size-[5rem] rounded-md border-2 border-gray-100" />
                         <img src="/images/iphone.jpg" className="size-[5rem] rounded-md border-2 border-gray-100" />
                     </div>
                 </div>
                 <div className="py-4 px-2">
-                    <h6 className="text-orange-500 text-sm mb-4">Havells</h6>
-                    <h5 className="font-medium text-sm mb-4">iPhone 12 Pro Max 256GB</h5>
+                    <h6 className="text-orange-500 text-sm mb-4">{product?.category}</h6>
+                    <h5 className="font-medium text-sm mb-4">{product?.name}</h5>
                     <div className="flex mb-4">
                         <Star className="size-4 fill-yellow-500 stroke-none" />
                         <Star className="size-4 fill-yellow-500 stroke-none" />
@@ -65,8 +72,14 @@ function SpecialProduct() {
                         <Star className="size-4 fill-yellow-500 stroke-none" />
                     </div>
                     <div className="mb-4">
-                        <h5 className="text-sm text-red-500 inline">$1,099.00&nbsp;</h5>
-                        <h5 className="text-sm text-gray-500 line-through inline">$1,199.00</h5> 
+                        {product?.discount > 0 ? (
+                            <div className="flex gap-2 items-center">
+                                <h5 className="text-sm text-red-500">{formatPriceWithDollar(product?.price - ((product?.price * product?.discount)/100))}</h5>
+                                <h5 className="text-sm text-gray-500 line-through">{formatPriceWithDollar(product?.price)}</h5> 
+                            </div>
+                        ) : (
+                            <h5 className="text-sm">{formatPriceWithDollar(product?.price)}</h5> 
+                        )}
                     </div>
                     <div className="mb-4">
                         <span className="text-sm font-semibold inline">112&nbsp;</span>
@@ -97,5 +110,9 @@ function SpecialProduct() {
         </Link>
     );
 }
+
+SpecialProduct.propTypes = {
+    product: PropTypes.object
+};
 
 export default SpecialProduct;

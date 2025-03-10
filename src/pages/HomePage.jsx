@@ -5,14 +5,16 @@ import Marquee from "react-fast-marquee";
 import BlogCard from "../components/BlogCard";
 import ProductCard from "../components/ProductCard";
 import SpecialProduct from "../components/SpecialProduct";
-import services from "../utils/Data";
+import { services } from "../utils/Data";
 import Meta from "../components/Meta";
+import useGetFeaturedCollection from "../hooks/useGetFeaturedCollections";
 
 function HomePage(){
     const productSliderRef = useRef(null)
     const blogSliderRef = useRef(null)
     const specialProductSliderRef = useRef(null)
     const popularProductSliderRef = useRef(null)
+    const { featuredCollection } = useGetFeaturedCollection()
 
     const scrollLeft = (sliderRef) => {
 		if (sliderRef.current) 
@@ -78,7 +80,7 @@ function HomePage(){
                 </div>
             </section>
             <section className="py-12 px-10 bg-gray-200">
-                <div className="max-w-[86rem] mx-auto flex items-center justify-between gap-2">
+                <div className="max-w-[86rem] mx-auto flex flex-wrap items-center justify-between gap-2">
                 {services.map((service, index) => (
                     <div key={index} className="flex sm:flex-row flex-col items-center justify-center  gap-4 w-[20%]">
                         <img src={service.image} alt={service.title} className="size-8"/>
@@ -174,13 +176,11 @@ function HomePage(){
                         </div>
                     </div>
                     <div className="flex overflow-x-scroll scrollbar-hide gap-4 items-center mt-6" ref={productSliderRef}>
-                        <ProductCard />
-                        <ProductCard />
-                        <ProductCard />
-                        <ProductCard />
-                        <ProductCard />
-                        <ProductCard />
-                        <ProductCard />
+                        {featuredCollection.map((product) => {
+                            return (
+                                <ProductCard product={product} key={product._id} />
+                            )
+                        })}
                     </div>
                 </div>
             </section>
@@ -238,10 +238,11 @@ function HomePage(){
                         </div>
                     </div>
                     <div className="flex overflow-x-scroll scrollbar-hide gap-4 items-center mt-6" ref={specialProductSliderRef}>
-                        <SpecialProduct />
-                        <SpecialProduct />
-                        <SpecialProduct />
-                        <SpecialProduct />
+                        {featuredCollection.map((product) => {
+                            return (
+                                <SpecialProduct product={product} key={product._id} />
+                            )
+                        })}
                     </div>
                 </div>
             </section>
@@ -255,13 +256,11 @@ function HomePage(){
                         </div>
                     </div>
                     <div className="flex overflow-x-scroll scrollbar-hide gap-4 items-center mt-6" ref={popularProductSliderRef}>
-                        <ProductCard />
-                        <ProductCard />
-                        <ProductCard />
-                        <ProductCard />
-                        <ProductCard />
-                        <ProductCard />
-                        <ProductCard />
+                        {featuredCollection.map((product) => {
+                            return (
+                                <ProductCard product={product} key={product._id} />
+                            )
+                        })}
                     </div>
                 </div>
             </section>

@@ -1,107 +1,172 @@
-import { create } from "zustand"
-import toast from "react-hot-toast"
-import axios from "axios"
-import Config from "../envVars"
+import { create } from "zustand";
+import toast from "react-hot-toast";
+import axios from "axios";
+import Config from "../envVars";
 
 const useAuthStore = create((set) => ({
-    user: localStorage.getItem("user") || null,
+    user: null,
     isSigningUp: false,
     isCheckingAuth: false,
     isLoggingOut: false,
     isLoggingIn: false,
+
+    // ✅ LOGIN FUNCTION (USER)
     login: async (credentials) => {
-        set({isLoggingIn:true})
+        set({ isLoggingIn: true });
         try {
-            const response = await axios.post(`${Config.BACKEND_URL}/api/v1/auth/login`, credentials, { withCredentials:true })
+            const response = await axios.post(
+                `${Config.BACKEND_URL}/api/v1/auth/login`,
+                credentials,
+                { withCredentials: true }
+            );
             const { user } = response.data;
+
             localStorage.setItem("user", JSON.stringify(user));
-            set({user, isLoggingIn:false})
-            toast.success("Logged in successfully")
-            return true; // ✅ Trả về true nếu đăng nhập thành công
+            set({ user, isLoggingIn: false });
+
+            toast.success("Logged in successfully");
+            return user; // ✅ Return full user object
         } catch (error) {
-            set({user: null, isLoggingIn: false})
-            toast.error(error.response.data.message || "An error occurred")
-            return false; // �� Trả về false nếu có l��i
+            set({ user: null, isLoggingIn: false });
+            toast.error(error.response?.data?.message || "An error occurred");
+            return null;
         }
     },
+
+    // ✅ LOGIN FUNCTION (ADMIN)
     loginAdmin: async (credentials) => {
-        set({isLoggingIn:true})
+        set({ isLoggingIn: true });
         try {
-            const response = await axios.post(`${Config.BACKEND_URL}/api/v1/auth/admin-login`, credentials, { withCredentials:true })
+            const response = await axios.post(
+                `${Config.BACKEND_URL}/api/v1/auth/admin-login`,
+                credentials,
+                { withCredentials: true }
+            );
             const { user } = response.data;
+
             localStorage.setItem("user", JSON.stringify(user));
-            set({user, isLoggingIn:false})
-            toast.success("Logged in successfully")
-            return true; // ✅ Trả về true nếu đăng nhập thành công
+            set({ user, isLoggingIn: false });
+
+            toast.success("Logged in successfully");
+            return user; // ✅ Return full user object
         } catch (error) {
-            set({user: null, isLoggingIn: false})
-            toast.error(error.response.data.message || "An error occurred")
-            return false; // �� Trả về false nếu có l��i
+            set({ user: null, isLoggingIn: false });
+            toast.error(error.response?.data?.message || "An error occurred");
+            return null;
         }
     },
+
+    // ✅ SIGNUP FUNCTION
     signup: async (credentials) => {
         set({ isSigningUp: true });
         try {
-            const response = await axios.post(`${Config.BACKEND_URL}/api/v1/auth/signup`, credentials, { withCredentials: true });
-            const { message } = response.data;
-    
-            set({ isSigningUp: false });
+            const response = await axios.post(
+                `${Config.BACKEND_URL}/api/v1/auth/signup`,
+                credentials,
+                { withCredentials: true }
+            );
+            const { user, message } = response.data;
+
+            localStorage.setItem("user", JSON.stringify(user)); // ✅ Sync user after signup
+            set({ user, isSigningUp: false });
+
             toast.success(message);
-            
-            return true; // ✅ Trả về true nếu đăng ký thành công
+            return user; // ✅ Return full user object
         } catch (error) {
-            toast.error(error.response?.data?.message || "An error occurred");
             set({ isSigningUp: false });
-            
-            return false; // ❌ Trả về false nếu có lỗi
+            toast.error(error.response?.data?.message || "An error occurred");
+            return null;
         }
     },
+
+    // ✅ LOGOUT FUNCTION
     logout: async () => {
-        set({isLoggingOut:true})
+        set({ isLoggingOut: true });
         try {
-            await axios.post(`${Config.BACKEND_URL}/api/v1/auth/logout`, {}, {
-                withCredentials: true,
-            })
+            await axios.post(`${Config.BACKEND_URL}/api/v1/auth/logout`, {}, { withCredentials: true });
+
             localStorage.removeItem("user");
-            console.log(document.cookie)
-            set({user: null, isLoggingOut:false})
-            toast.success("Logged out successfully")
-            return true; // ✅ Trả về true nếu đăng xuất thành công
+            set({ user: null, isLoggingOut: false });
+
+            toast.success("Logged out successfully");
+            return true;
         } catch (error) {
-            set({isLoggingOut:false})
-            toast.error(error.response?.data?.message || "Logout failed")
-            return false; // �� Trả về false nếu có l��i
+            set({ isLoggingOut: false });
+            toast.error(error.response?.data?.message || "Logout failed");
+            return false;
         }
     },
-    authCheck: async (role) => {
+
+    // ✅ AUTH CHECK FUNCTION (Ensures backend & local sync)
+    authCheck: async (requiredRole) => {
         set({ isCheckingAuth: true });
+
         try {
+            // 🔹 Check from localStorage first (faster initial check)
             const storedUser = localStorage.getItem("user");
             if (storedUser) {
                 const parsedUser = JSON.parse(storedUser);
-                set({ user: parsedUser, isCheckingAuth: false });
-    
-                if (parsedUser.role === role) 
-                    return true;
+                set({ user: parsedUser });
+
+                // ✅ Return user object if role matches
+                if (!requiredRole || parsedUser.role === requiredRole) {
+                    set({ isCheckingAuth: false });
+                    return parsedUser;
+                }
             }
-    
-            // Fallback: Check with backend
-            const response = await axios.get(`${Config.BACKEND_URL}/api/v1/auth/authCheck`, { withCredentials: true });
-    
-            if (response.data.user.role === role) {
+
+            // 🔹 Always verify with the backend (security)
+            const response = await axios.get(
+                `${Config.BACKEND_URL}/api/v1/auth/authCheck`,
+                { withCredentials: true }
+            );
+
+            if (response.data?.user) {
+                localStorage.setItem("user", JSON.stringify(response.data.user));
                 set({ user: response.data.user });
-                return true;
+                return response.data.user; // ✅ Return user object
             }
-            
-            return false;
+
+            set({ user: null });
+            return null; // ❌ Unauthorized
         } catch (error) {
             console.error("Error checking auth:", error);
             set({ user: null });
-            return false;
+            return null;
         } finally {
             set({ isCheckingAuth: false });
         }
-    }    
-}))
+    },
 
-export default useAuthStore
+    // ✅ UPDATE WISHLIST
+    updateWishlist: (updatedWishlist) => {
+        set((state) => {
+            if (!state.user) return state; // Ensure user exists
+            try {
+                const updatedUser = { ...state.user, wishlist: updatedWishlist };
+                localStorage.setItem("user", JSON.stringify(updatedUser)); // ✅ Sync with local storage
+                return { user: updatedUser };
+            } catch (error) {
+                console.error("Failed to update wishlist:", error);
+                return state;
+            }
+        });
+    },
+
+    // ✅ UPDATE CART
+    updateCart: (updatedCart) => {
+        set((state) => {
+            if (!state.user) return state; // Ensure user exists
+            try {
+                const updatedUser = { ...state.user, cart: updatedCart };
+                localStorage.setItem("user", JSON.stringify(updatedUser)); // ✅ Sync with local storage
+                return { user: updatedUser };
+            } catch (error) {
+                console.error("Failed to update cart:", error);
+                return state;
+            }
+        });
+    },
+}));
+
+export default useAuthStore;

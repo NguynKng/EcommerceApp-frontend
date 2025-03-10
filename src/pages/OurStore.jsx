@@ -1,9 +1,34 @@
 import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
-import { Link } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
+import useGetFeaturedCollection from "../hooks/useGetFeaturedCollections";
+import { useEffect, useState } from "react";
+import Config from "../envVars";
+import axios from "axios";
+import toast from "react-hot-toast"
 
 function OurStore(){
+    const { category } = useParams()
+    const [searchParams] = useSearchParams();
+    const searchQuery = searchParams.get("query");
+    const { featuredCollection } = useGetFeaturedCollection(category, searchQuery);
+    const [categories, setCategories] = useState([])
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await axios.get(`${Config.BACKEND_URL}/api/v1/product-category`, {
+                    withCredentials: true
+                })
+                setCategories(response.data.categories)
+            } catch (error) {
+                console.error("Error fetching brands:", error)
+                toast.error("Failed to load brands. Please try again later.")
+            }
+        }
+        fetchCategories()
+    }, [category])
 
     return (
         <>
@@ -12,13 +37,18 @@ function OurStore(){
             <div className="py-6 px-4 bg-gray-200">
                 <div className="max-w-[86rem] mx-auto flex gap-4">
                     <div className="flex flex-col gap-4 w-[16rem]">
+                        {searchQuery && (
+                            <div className="py-2 px-4 bg-white rounded-md w-full">
+                                <h2>Search results for</h2>
+                                <h1 className="text-lg font-medium">{searchQuery} ({featuredCollection.length})</h1>
+                        </div>
+                        )}
                         <div className="py-2 px-4 bg-white rounded-md w-full">
                             <h3 className="font-medium mb-4 text-lg">Shop By Categories</h3>
-                            <div>
-                                <Link to="#" className="block text-gray-400 text-sm leading-8 hover:text-black">Watch</Link>
-                                <Link to="#" className="block text-gray-400 text-sm leading-8 hover:text-black">TV</Link>
-                                <Link to="#" className="block text-gray-400 text-sm leading-8 hover:text-black">Camera</Link>
-                                <Link to="#" className="block text-gray-400 text-sm leading-8 hover:text-black">Laptop</Link>
+                            <div className="grid lg:grid-cols-2 grid-cols-1 items-center">
+                            {categories.map((cat, index) => (
+                                <Link key={index} to={`/` + cat.name.toLowerCase()} className={`block text-sm leading-8 hover:text-black ${category == cat.name.toLowerCase() ? "text-black" : "text-gray-400"}`}>{cat.name}</Link>
+                            ))}
                             </div>
                         </div>
                         <div className="py-2 px-4 bg-white rounded-md w-full">
@@ -161,31 +191,11 @@ function OurStore(){
                     </div>
                     <div className="w-[70rem]">
                         <div className="flex flex-wrap gap-4">
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
-                            <ProductCard />
+                            {featuredCollection.map((product) => {
+                                return (
+                                    <ProductCard product={product} key={product._id} />
+                                )
+                            })}
                         </div>
                     </div>
                 </div>

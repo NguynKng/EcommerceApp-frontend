@@ -1,3 +1,5 @@
+import { Camera, Laptop, Smartphone, Tablet, Tv, Watch } from 'lucide-react';
+
 const services = [
     {
         "title": "Free Shipping",
@@ -26,4 +28,31 @@ const services = [
     },
 ]
 
-export default services
+const productCategories = [
+    {
+        "name" : "Laptop",
+        "icon" : Laptop
+    },
+    {
+        "name" : "Mobile",
+        "icon" : Smartphone
+    },
+    {
+        "name" : "Tablet",
+        "icon" : Tablet
+    },
+    {
+        "name" : "Watch",
+        "icon" : Watch
+    },
+    {
+        "name" : "Camera",
+        "icon" : Camera
+    },
+    {
+        "name": "TV",
+        "icon" : Tv
+    }
+]
+
+export { services, productCategories }

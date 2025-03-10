@@ -185,6 +185,7 @@ function Dashboard(){
                     title: 'No.',
                     dataIndex: 'no',
                     key: 'no',
+                    align: 'center',
                 },
                 {
                     title: 'Status',
@@ -193,32 +194,37 @@ function Dashboard(){
                     render: (text) => (
                         <div className={`text-${text === "Completed" ? 'green-500' : text === "Pending" ? "gray-500" : "red-500"} text-sm border-2 ${text === "Completed" ? 'border-green-500' : text === "Pending" ? "border-gray-500" : "border-red-500"} p-1 rounded text-center`}>{text}</div>
                     ),
+                    align: 'center',
                 },
                 {
                     title: 'Nationality',
                     dataIndex: 'nationality',
                     key: 'nationality',
                     render: (text) => (
-                        <span className="flex items-center gap-2">
+                        <span className="flex justify-center items-center gap-2">
                             <Flag code={countryFlags[text]} className="w-6 h-4" />
                             {text}
                         </span>
                     ),
+                    align: 'center',
                 },
                 {
                     title: 'Customer',
                     dataIndex: 'customer',
                     key: 'customer',
+                    align: 'center',
                 },
                 {
                     title: 'Date',
                     dataIndex: 'date',
                     key: 'date',
+                    align: 'center',
                 },
                 {
                     title: 'Total',
                     dataIndex: 'total',
                     key: 'total',
+                    align: 'center',
                 },
             ]
         }
@@ -269,7 +275,7 @@ function Dashboard(){
     return (
         <div className="py-4 px-6">
             <div className="grid md:grid-cols-4 sm:grid-cols-2 grid-cols-1 items-center gap-4">
-                <div className="flex justify-between items-center bg-white px-4 py-2 min-h-24 rounded-md">
+                <div className="flex justify-between items-center border-2 border-black bg-white px-4 py-2 min-h-24 rounded-md">
                     <div className="flex flex-col gap-4">
                         <h1 className="text-gray-400">Sales</h1>
                         <span className="text-2xl">2.382</span>
@@ -282,7 +288,7 @@ function Dashboard(){
                         <span className="text-sm text-gray-400 text-right">Since last week</span>
                     </div>
                 </div>
-                <div className="flex justify-between items-center bg-white px-4 py-2 min-h-24 rounded-md">
+                <div className="flex justify-between items-center bg-white border-2 border-black px-4 py-2 min-h-24 rounded-md">
                     <div className="flex flex-col gap-4">
                         <h1 className="text-gray-400">Earnings</h1>
                         <span className="text-2xl">$21.300</span>
@@ -295,7 +301,7 @@ function Dashboard(){
                         <span className="text-sm text-gray-400 text-right">Since last week</span>
                     </div>
                 </div>
-                <div className="flex justify-between items-center bg-white px-4 py-2 min-h-24 rounded-md">
+                <div className="flex justify-between items-center bg-white border-2 border-black px-4 py-2 min-h-24 rounded-md">
                     <div className="flex flex-col gap-4">
                         <h1 className="text-gray-400">Visitors</h1>
                         <span className="text-2xl">14.212</span>
@@ -308,7 +314,7 @@ function Dashboard(){
                         <span className="text-sm text-gray-400 text-right">Since last week</span>
                     </div>
                 </div>
-                <div className="flex justify-between items-center bg-white px-4 py-2 min-h-24 rounded-md">
+                <div className="flex justify-between items-center bg-white border-2 border-black px-4 py-2 min-h-24 rounded-md">
                     <div className="flex flex-col gap-4">
                         <h1 className="text-gray-400">Orders</h1>
                         <span className="text-2xl">64</span>

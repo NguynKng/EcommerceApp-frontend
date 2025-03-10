@@ -40,7 +40,7 @@ function MainLayout({ Element }) {
             <Meta title={`ADMIN - ${tab}`} />
             <nav className={`fixed left-0 min-h-screen z-50 ${isOpenNavbar ? 'lg:w-[15%] w-[50%]' : 'lg:w-[7%] hidden lg:block'}`} style={{backgroundColor:"rgb(21, 40, 60)"}}>
                 <div className={`relative h-28 flex items-center justify-center gap-2 p-4 ${!isOpenNavbar && 'flex-col'}`} style={{ backgroundColor: "rgb(33, 65, 98)" }}>
-                    <img src="/images/avatar-admin.jpg" className="size-16 rounded-full" />
+                    <img src="/images/avatar-2.jpg" className="size-16 rounded-full" />
                     {isOpenNavbar &&
                         <div>
                             <h2 className="text-white text-center">{user.fullName}</h2>
@@ -52,7 +52,7 @@ function MainLayout({ Element }) {
                     }
                 </div>
                 <h1 className={`${isOpenNavbar ? 'pl-4' : 'text-center'} px-2 py-4 text-xl border-b-2 text-white border-orange-500`}>General</h1>
-                <div className={`flex flex-col h-[80vh] scrollbar-hide overflow-y-auto text-gray-400 py-4 ${!isOpenNavbar && 'items-center'}`}>
+                <div className={`flex flex-col h-[75vh] scrollbar-hide overflow-y-auto text-gray-400 py-4 ${!isOpenNavbar && 'items-center'}`}>
                     <Link to="/admin" className={`py-4 px-6 rounded-md ${tab === 'Dashboard' ? 'text-white' : 'text-gray-400'}`} onClick={() => toggleTab("Dashboard")}>
                         <div className={`flex ${!isOpenNavbar && 'justify-center flex-col'} items-center gap-2 hover:text-white`}>
                             <img src="/images/layout.png" className="size-6" />
@@ -71,16 +71,14 @@ function MainLayout({ Element }) {
                                 <img src="/images/catalogue.png" className="size-6" />
                                 <h1>Catalogue</h1>
                             </div>
-                            <ChevronDown className="size-5" />
+                            <ChevronLeft className={`transition-transform duration-300 ${openDropdowns["Catalogue"] && "-rotate-90"} size-5`} />
                         </div>
-                        {openDropdowns["Catalogue"] && (
-                            <div className="flex flex-col sm:items-start items-center mt-2 sm:text-base text-xs sm:ml-4">
-                                <Link className="sm:px-4 py-2 hover:text-white sm:text-left text-center" onClick={() => toggleTab("Catalogue")}>Product</Link>
-                                <Link className="sm:px-4 py-2 hover:text-white sm:text-left text-center" onClick={() => toggleTab("Catalogue")}>Category</Link>
-                                <Link to="/admin/brand" className="sm:px-4 py-2 hover:text-white sm:text-left text-center" onClick={() => toggleTab("Catalogue")}>Brand</Link>
-                                <Link className="sm:px-4 py-2 hover:text-white sm:text-left text-center" onClick={() => toggleTab("Catalogue")}>Coupon</Link>
-                            </div>
-                        )}
+                        <div className={`flex flex-col sm:items-start items-center mt-2 sm:text-base text-xs sm:ml-4 transition-all duration-300 ease-in-out origin-top ${openDropdowns["Catalogue"] ? "opacity-100 scale-y-100 h-auto" : "opacity-0 scale-y-0 h-0"} overflow-hidden`}>   
+                            <Link to="/admin/product" className="sm:px-4 py-2 hover:text-white sm:text-left text-center" onClick={() => toggleTab("Catalogue")}>Product</Link>
+                            <Link to="/admin/product-category" className="sm:px-4 py-2 hover:text-white sm:text-left text-center" onClick={() => toggleTab("Catalogue")}>Category</Link>
+                            <Link to="/admin/brand" className="sm:px-4 py-2 hover:text-white sm:text-left text-center" onClick={() => toggleTab("Catalogue")}>Brand</Link>
+                            <Link to="/admin/coupon" className="sm:px-4 py-2 hover:text-white sm:text-left text-center" onClick={() => toggleTab("Catalogue")}>Coupon</Link>
+                        </div>
                     </div>
                     <div className={`cursor-pointer py-4 px-6 rounded-md ${tab === 'Orders' ? 'text-white' : 'text-gray-400'}`}>
                         <div className={`flex ${!isOpenNavbar ? 'flex-col justify-center' : 'justify-between'} hover:text-white items-center gap-2`}>
@@ -104,14 +102,12 @@ function MainLayout({ Element }) {
                                 <img src="/images/blogger.png" className="size-6" />
                                 <h1>Blogs</h1>
                             </div>
-                            <ChevronDown className="size-5" />
+                            <ChevronLeft className={`transition-transform duration-300 ${openDropdowns["Blogs"] && "-rotate-90"} size-5`} />
                         </div>
-                        {openDropdowns["Blogs"] && (
-                            <div className="flex flex-col sm:items-start items-center mt-2 lg:text-base text-xs sm:ml-4">
-                                <Link to="/admin/blogs" className="sm:px-4 py-2 hover:text-white sm:text-left text-center" onClick={() => toggleTab("Blogs")}>Blogs</Link>
-                                <Link to="/admin/blogs-category" className="sm:px-4 py-2 hover:text-white sm:text-left text-center" onClick={() => toggleTab("Blogs")}>Category</Link>
-                            </div>
-                        )}
+                        <div className={`flex flex-col sm:items-start items-center mt-2 sm:text-base text-xs sm:ml-4 transition-all duration-300 ease-in-out origin-top ${openDropdowns["Blogs"] ? "opacity-100 scale-y-100 h-auto" : "opacity-0 scale-y-0 h-0"} overflow-hidden`}>
+                            <Link to="/admin/blogs" className="sm:px-4 py-2 hover:text-white sm:text-left text-center" onClick={() => toggleTab("Blogs")}>Blogs</Link>
+                            <Link to="/admin/blogs-category" className="sm:px-4 py-2 hover:text-white sm:text-left text-center" onClick={() => toggleTab("Blogs")}>Category</Link>
+                        </div>
                     </div>
                     <Link className={`py-4 px-6 rounded-md ${tab === 'Chat' ? 'text-white' : 'text-gray-400'}`} onClick={() => toggleTab("Chat")}>
                         <div className={`flex ${!isOpenNavbar && 'flex-col justify-center'} items-center gap-2 hover:text-white`}>
@@ -132,21 +128,21 @@ function MainLayout({ Element }) {
                         </div>
                     </Link>
                     <div className={`cursor-pointer py-4 px-6 rounded-md ${tab === 'Analytics' ? 'text-white' : 'text-gray-400'}`}>
-                        <div className={`flex ${!isOpenNavbar ? 'flex-col justify-center' : 'justify-between'} items-center gap-2 hover:text-white`}>
+                        <div className={`flex ${!isOpenNavbar ? 'flex-col justify-center' : 'justify-between'} items-center gap-2 hover:text-white`} onClick={() => toggleDropdown("Analytics")}>
                             <div className={`flex ${!isOpenNavbar && 'flex-col justify-center'} items-center gap-2`} onClick={() => toggleTab("Analytics")}>
                                 <img src="/images/bar-graph.png" className="size-6" />
                                 <h1>Analytics</h1>
                             </div>
-                            <ChevronDown className="size-5" />
+                            <ChevronLeft className={`transition-transform duration-300 ${openDropdowns["Analytics"] && "-rotate-90"} size-5`} />
                         </div>
                     </div>
                     <div className={`cursor-pointer py-4 px-6 rounded-md ${tab === 'Settings' ? 'text-white' : 'text-gray-400'}`}>
-                        <div className={`flex ${!isOpenNavbar ? 'flex-col justify-center' : 'justify-between'} items-center gap-2 hover:text-white`}>
+                        <div className={`flex ${!isOpenNavbar ? 'flex-col justify-center' : 'justify-between'} items-center gap-2 hover:text-white`} onClick={() => toggleDropdown("Settings")}>
                             <div className={`flex ${!isOpenNavbar && 'flex-col justify-center'} items-center gap-2`} onClick={() => toggleTab("Settings")}>
                                 <img src="/images/cogwheel.png" className="size-6" />
                                 <h1>Settings</h1>
                             </div>
-                            <ChevronDown className="size-5" />
+                            <ChevronLeft className={`transition ease-in-out duration-500 ${openDropdowns["Settings"] && "-rotate-90"} size-5`} />
                         </div>
                     </div>
                 </div>
@@ -159,7 +155,7 @@ function MainLayout({ Element }) {
                     <div className="bg-orange-600 cursor-pointer flex items-center justify-center min-w-16" onClick={OpenNavbar}>
                         <Menu className="size-10" />
                     </div>
-                    <div className="flex flex-wrap gap-2 items-center justify-between w-[83%] py-2 px-4">
+                    <div className="flex gap-2 items-center justify-between w-[83%] py-2 px-4">
                         <h1 className="text-xl sm:text-3xl">NguynKng</h1>
                         <div className="flex items-center">
                             <div className="relative px-2 cursor-pointer">
@@ -176,7 +172,7 @@ function MainLayout({ Element }) {
                         </div>
                     </div>
                     <div className="relative cursor-pointer bg-orange-600 min-w-[15%] hidden md:flex items-center justify-center gap-2 p-2" onClick={toggleAdminDropdown}>
-                        <img src="/images/avatar-admin.jpg" className="size-8 rounded-full" />
+                        <img src="/images/avatar-2.jpg" className="size-8 rounded-full" />
                         <h1 className="text-white text-sm">{user.fullName}</h1>
                         <ChevronDown className="size-5" />
                         {isOpenAdminDropdown && (

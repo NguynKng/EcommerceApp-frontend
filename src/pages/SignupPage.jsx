@@ -39,63 +39,63 @@ function SignupPage() {
                     <h1 className="text-center text-3xl font-medium">Sign up</h1>
                     <form className="flex flex-col gap-3 mt-4" onSubmit={handleSignUp}>
                         <div className="flex gap-2 items-center">
-                            <div className="relative">
-                                <input type="text" className="peer p-4 w-full bg-gray-200 rounded-md"
+                            <div className="relative bg-gray-200 rounded-md p-2">
+                                <input type="text" className="peer pt-4 px-2 size-full bg-transparent focus:outline-none"
                                     id="fullName"
                                     name="fullName"
                                     value={fullName}
                                     onChange={(e) => setFullName(e.target.value)}
                                     required
                                 />
-                                <label htmlFor="fullName" className={`absolute left-4 transition-all duration-300 font-medium text-gray-400  ${fullName ? 'text-xs top-0.5' : 'top-4 peer-focus:text-xs peer-focus:top-0.5'}`}>Full Name</label>
+                                <label htmlFor="fullName" className={`absolute left-4 transition-all duration-300 font-medium text-gray-400  ${fullName ? 'text-xs top-2' : 'top-3.5 peer-focus:text-xs peer-focus:top-2'}`}>Full Name</label>
                             </div>
-                            <div className="relative">
-                                <input type="text" className="peer p-4 w-full bg-gray-200 rounded-md"
+                            <div className="relative bg-gray-200 rounded-md p-2">
+                                <input type="text" className="peer pt-4 px-2 size-full bg-transparent focus:outline-none"
                                     id="phoneNumber"
                                     name="phoneNumber"
                                     value={phoneNumber}
                                     onChange={(e) => setPhoneNumber(e.target.value)}
                                     required
                                 />
-                                <label htmlFor="phoneNumber" className={`absolute left-4 transition-all duration-300 font-medium text-gray-400  ${phoneNumber ? 'text-xs top-0.5' : 'top-4 peer-focus:text-xs peer-focus:top-0.5'}`}>Phone Number</label>
+                                <label htmlFor="phoneNumber" className={`absolute left-4 transition-all duration-300 font-medium text-gray-400  ${phoneNumber ? 'text-xs top-2' : 'top-3.5 peer-focus:text-xs peer-focus:top-2'}`}>Phone Number</label>
                             </div>
                         </div>
-                        <div className="relative">
-                            <input type="text" className="peer p-4 w-full bg-gray-200 rounded-md"
+                        <div className="relative bg-gray-200 rounded-md p-2">
+                            <input type="text" className="peer pt-4 px-2 size-full bg-transparent focus:outline-none"
                                 id="email"
                                 name="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
                             />
-                            <label htmlFor="email" className={`absolute left-4 transition-all duration-300 font-medium text-gray-400  ${email ? 'text-xs top-0.5' : 'top-4 peer-focus:text-xs peer-focus:top-0.5'}`}>Email</label>
+                            <label htmlFor="email" className={`absolute left-4 transition-all duration-300 font-medium text-gray-400  ${email ? 'text-xs top-2' : 'top-3.5 peer-focus:text-xs peer-focus:top-2'}`}>Email</label>
                         </div>
-                        <div className="relative">
-                            <input type={showPassword ? "text" : "password" } className="peer p-4 w-full bg-gray-200 rounded-md" 
+                        <div className="relative bg-gray-200 rounded-md p-2">
+                            <input type={showPassword ? "text" : "password" } className="peer pt-4 px-2 size-full bg-transparent focus:outline-none" 
                                 id="password"
                                 name="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
                             />
-                            <label htmlFor="password" className={`absolute left-4 transition-all duration-300 font-medium text-gray-400  ${password ? 'text-xs top-0.5' : 'top-4 peer-focus:text-xs peer-focus:top-0.5'}`}>Password</label>
+                            <label htmlFor="password" className={`absolute left-4 transition-all duration-300 font-medium text-gray-400  ${password ? 'text-xs top-2' : 'top-3.5 peer-focus:text-xs peer-focus:top-2'}`}>Password</label>
                             {showPassword ? 
-                                <Eye className={`absolute right-4 top-0 translate-y-1/2 cursor-pointer`} onClick={handleShowPassword} /> :
-                                <EyeOff className={`absolute right-4 top-0 translate-y-1/2 cursor-pointer`} onClick={handleShowPassword} /> 
+                                <Eye className={`absolute right-4 top-0 translate-y-2/3 cursor-pointer`} onClick={handleShowPassword} /> :
+                                <EyeOff className={`absolute right-4 top-0 translate-y-2/3 cursor-pointer`} onClick={handleShowPassword} /> 
                             }
                         </div>
-                        <div className="relative">
-                            <input type={showConfirmPassword ? "text" : "password" } className="peer p-4 w-full bg-gray-200 rounded-md"
+                        <div className="relative bg-gray-200 rounded-md p-2">
+                            <input type={showConfirmPassword ? "text" : "password" } className="peer pt-4 px-2 size-full bg-transparent focus:outline-none"
                                 id="confirmPassword"
                                 name="confirmPassword"
                                 value={confirmPassword}
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 required
                             />
-                            <label htmlFor="confirmPassword" className={`absolute left-4 transition-all duration-300 font-medium text-gray-400  ${confirmPassword ? 'text-xs top-0.5' : 'top-4 peer-focus:text-xs peer-focus:top-0.5'}`}>Confirm Password</label>
+                            <label htmlFor="confirmPassword" className={`absolute left-4 transition-all duration-300 font-medium text-gray-400  ${confirmPassword ? 'text-xs top-2' : 'top-3.5 peer-focus:text-xs peer-focus:top-2'}`}>Confirm Password</label>
                             {showConfirmPassword ? 
-                                <Eye className={`absolute right-4 top-0 translate-y-1/2 cursor-pointer`} onClick={handleShowConfirmPassword} /> :
-                                <EyeOff className={`absolute right-4 top-0 translate-y-1/2 cursor-pointer`} onClick={handleShowConfirmPassword} /> 
+                                <Eye className={`absolute right-4 top-0 translate-y-2/3 cursor-pointer`} onClick={handleShowConfirmPassword} /> :
+                                <EyeOff className={`absolute right-4 top-0 translate-y-2/3 cursor-pointer`} onClick={handleShowConfirmPassword} /> 
                             }
                         </div>
                         <button 

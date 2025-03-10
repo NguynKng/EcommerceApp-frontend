@@ -1,8 +1,10 @@
 import {Mail, Phone} from "lucide-react"
 import { useState } from "react"
+import useAuthStore from "../../store/authUser";
 
 function Profile() {
     const [tab, setTab] = useState("Recent Activity")
+    const { user } = useAuthStore()
 
     const toggleTab = (name) => {
         setTab(name)
@@ -16,19 +18,19 @@ function Profile() {
                 </div>
                 <div className="p-6">
                     <div className="flex items-center sm:items-start gap-4 py-4 sm:flex-row flex-col">
-                        <img src="/images/avatar-admin.jpg" className="rounded-full size-[13rem] border-2 border-gray-200" />
+                        <img src="/images/avatar-2.jpg" className="rounded-full size-[13rem] border-2 border-gray-200" />
                         <div className="p-2 w-full">
-                            <h1 className="text-2xl mb-4">Nguyên Khang</h1>
+                            <h1 className="text-2xl mb-4">{user.fullName}</h1>
                             <span>About:&nbsp;
                                 <span className="text-gray-500">Frontend Developer</span>
                             </span>
                             <div className="flex items-center mt-4">
                                 <Mail className="size-5 text-gray-500" />
-                                <span className="text-gray-500">: harrybin2109@gmail.com</span>
+                                <span className="text-gray-500">: {user.email}</span>
                             </div>
                             <div className="flex items-center">
                                 <Phone className="size-5 text-gray-500" />
-                                <span className="text-gray-500">: 987 654 3210</span>
+                                <span className="text-gray-500">: {user.phoneNumber}</span>
                             </div>
                             <div className="mt-6">
                                 <h1>Web Applications</h1>
