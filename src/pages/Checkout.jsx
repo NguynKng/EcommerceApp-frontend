@@ -15,6 +15,7 @@ function Checkout(){
     const [state, setState] = useState()
     const [zip, setZip] = useState()
     const {user} = useAuthStore()
+    console.log(user)
 
     return(
         <div className="flex lg:flex-row flex-col-reverse">
@@ -32,8 +33,7 @@ function Checkout(){
                     </div>
                     <h1 className="text-xl">Contact information</h1>
                     <div className="leading-8">
-                        <h1>Nguyen Khang (harrybin2109@gmail.com)</h1>
-                        <Link>Logout</Link>
+                        <h1>{user?.fullName} ({user?.email})</h1>
                         <div className="flex gap-2 items-center">
                             <input type="checkbox" className="size-4 cursor-pointer" />
                             <label>Email me with news and offers</label>
@@ -141,7 +141,7 @@ function Checkout(){
                             <ChevronLeft />
                             <span>Return to cart</span>
                         </Link>
-                        <button type="submit" className="p-4 text-white bg-red-700 hover:opacity-90 rounded-md">Continue to shipping</button>
+                        <button type="submit" className="p-4 text-white bg-red-700 hover:opacity-90 rounded-md">Place Order</button>
                     </div>
                 </div>
             </div>

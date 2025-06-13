@@ -6,6 +6,7 @@ import Config from "../envVars";
 import useAuthStore from "../store/authUser";
 import { handleAddWishList, handleAddCart } from "../utils/handleFunction";
 import { useImagePreview } from "../hooks/useImagePreview";
+import Spinner from "./Spinner";
 
 function DetailProduct({ product }) {
     const { openImagePreview, ImagePreviewModal } = useImagePreview()
@@ -13,6 +14,11 @@ function DetailProduct({ product }) {
     const thumbnailSliderRef = useRef();
     const thumbnailIndex = product?.images.findIndex(img => img.type === "thumbnail") || 0;
     const [currentIndex, setCurrentIndex] = useState(thumbnailIndex);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleImageLoad = () => {
+        setIsLoading(false);
+      };
     
     // Function to update selected image
     const updateImage = (index) => {
@@ -40,13 +46,22 @@ function DetailProduct({ product }) {
             <ImagePreviewModal />
             {/* Left Section - Image Gallery */}
             <div className="flex flex-col lg:w-[45%] w-full gap-2">
-                
                 {/* Main Image Display */}
-                <div className="relative w-full h-[36rem] cursor-pointer" onClick={() => openImagePreview(`${Config.BACKEND_URL}/images/` + product?.images[currentIndex].path)}>
-                    <img src={`${Config.BACKEND_URL}/images/` + product?.images[currentIndex].path}
-                        className="size-full object-cover border-2 border-gray-200" 
-                        alt="Selected"
+                <div className="relative w-full h-[36rem] cursor-pointer">
+                    {isLoading ? (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                            <Spinner />
+                        </div>
+                    ) : (
+                        <img src={product?.images?.[currentIndex]?.path 
+                            ? `${Config.BACKEND_URL}/images/${product.images[currentIndex].path}` 
+                            : "/images/no-thumbnail.png"}
+                            className="size-full object-cover border-2 border-gray-200" 
+                            alt="Selected"
+                            onClick={() => openImagePreview(`${Config.BACKEND_URL}/images/` + product?.images[currentIndex].path)}
+                            onLoad={handleImageLoad}
                     />
+                    )}
 
                     {/* Left Arrow */}
                     <div className={`absolute top-1/2 left-2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full cursor-pointer ${currentIndex === 0 ? "opacity-50 cursor-not-allowed" : ""}`} onClick={() => updateImage(currentIndex - 1)} >
@@ -62,7 +77,7 @@ function DetailProduct({ product }) {
                     </div>
                 </div>
 
-                {/* Thumbnail Images */}
+                {/* List Images */}
                 <div className="relative w-full h-20 overflow-hidden">
                     <div className="flex overflow-x-scroll gap-2 scrollbar-hide items-center size-full transition-transform duration-500 ease-in-out" ref={thumbnailSliderRef}>
                         {product?.images.map((image, index) => (
@@ -193,35 +208,35 @@ function DetailProduct({ product }) {
                             <Truck />
                             <span>Shipping & Returns</span>
                         </div>
-                        <ChevronDown className="size-5" />
+                        <ChevronDown className="size-5 cursor-pointer" />
                     </div>
                     <div className="flex items-center justify-between gap-2 py-2 border-b-2 border-gray-200">
                         <div className="flex gap-2">
                             <Anvil />
                             <span>Materials</span>
                         </div>
-                        <ChevronDown className="size-5" />
+                        <ChevronDown className="size-5 cursor-pointer" />
                     </div>
                     <div className="flex justify-between items-center gap-2 py-2 border-b-2 border-gray-200">
                         <div className="flex gap-2">
                             <Ruler />
                             <span>Dimensions</span>
                         </div>
-                        <ChevronDown className="size-5" />
+                        <ChevronDown className="size-5 cursor-pointer" />
                     </div>
                     <div className="flex items-center justify-between gap-2 py-2 border-b-2 border-gray-200">
                         <div className="flex gap-2">
                             <Heart />
                             <span>Care Instructions</span>
                         </div>
-                        <ChevronDown className="size-5" />
+                        <ChevronDown className="size-5 cursor-pointer" />
                     </div>
                     <div className="flex justify-between items-center gap-2 py-2 border-b-2 border-gray-200">
                         <div className="flex gap-2">
                             <Link2 />
                             <span>Share</span>
                         </div>
-                        <ChevronDown className="size-5" />
+                        <ChevronDown className="size-5 cursor-pointer" />
                     </div>
                 </div>
                 <div className="bg-gray-100 flex flex-col items-center p-4 gap-2">

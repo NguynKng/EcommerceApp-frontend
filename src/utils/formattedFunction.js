@@ -10,14 +10,17 @@ const formatPriceWithDollar = (num) => {
     return "$" + parseFloat(num).toFixed(2);
 };
 
-function formatTime(dateString) {
-    
+function formatDateTime(dateString) {
     const date = new Date(dateString)
     const day = date.getUTCDate(); // Use UTC to prevent timezone shifts
     const month = date.getUTCMonth() + 1; // getUTCMonth() is zero-based
     const year = date.getUTCFullYear();
 
     return `${day}/${month}/${year}`;
+}
+
+function formatTime(num) {
+    return num.toString().padStart(2, "0");
 }
 
 function formattedRunTime(minutes) {
@@ -31,6 +34,7 @@ function formattedRunTime(minutes) {
 export {
     formatDate,
     formattedRunTime,
+    formatDateTime,
     formatTime,
     formatPriceWithDollar
 }

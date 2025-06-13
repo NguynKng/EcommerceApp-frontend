@@ -3,7 +3,7 @@ import { Column } from "@ant-design/charts";
 import { Pie } from '@ant-design/plots';
 import { Table } from "antd";
 import Flag from "react-world-flags";
-import countryFlags from "../../utils/CountryFlagData";
+import { countryFlags } from "../../utils/data/countryFlag";
 import { Calendar, theme } from 'antd';
 
 function Dashboard(){

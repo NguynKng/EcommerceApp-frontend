@@ -152,8 +152,8 @@ function MainLayout({ Element }) {
             </nav>
             <div className={`relative z-10`}>
                 <header className={`fixed w-full min-h-12 right-0 flex text-white z-10 ${isOpenNavbar ? 'lg:w-[85%]' : 'lg:w-[93%]'}`} style={{ backgroundColor: "rgb(21, 40, 60)" }}>
-                    <div className="bg-orange-600 cursor-pointer flex items-center justify-center min-w-16" onClick={OpenNavbar}>
-                        <Menu className="size-10" />
+                    <div className="bg-orange-600 cursor-pointer flex items-center justify-center min-w-14" onClick={OpenNavbar}>
+                        <Menu className="size-8" />
                     </div>
                     <div className="flex gap-2 items-center justify-between w-[83%] py-2 px-4">
                         <h1 className="text-xl sm:text-3xl">NguynKng</h1>

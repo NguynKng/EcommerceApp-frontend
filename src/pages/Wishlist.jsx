@@ -64,7 +64,17 @@ function Wishlist() {
                                 <Link to={`/product/` + product?.slug} className="font-medium hover:underline underline-offset-2">
                                     {product?.name}
                                 </Link>
-                                <span className="font-medium text-orange-500">{formatPriceWithDollar(product?.price)}</span>
+                                {product?.discount > 0 ? (
+                                    <div className="flex gap-2 items-center">
+                                        <h5 className="text-orange-500 font-medium text-xl">{formatPriceWithDollar(product?.price - ((product?.price * product?.discount)/100))}</h5>
+                                        <h5 className="text-gray-500 line-through font-medium">{formatPriceWithDollar(product?.price)}</h5> 
+                                        <div className="bg-orange-400 rounded-xl px-4 py-1">
+                                            <span className="text-black">-{product?.discount}%</span>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <h5 className="text-orange-500 font-medium text-xl">{formatPriceWithDollar(product?.price)}</h5> 
+                                )}
                             </div>
                         ))
                     )}

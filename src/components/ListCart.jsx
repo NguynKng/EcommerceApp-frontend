@@ -25,13 +25,13 @@ function ListCart({ isOpenCart }){
                         </div>
                         <div className="relative w-[70%]">
                             <div className="flex flex-col gap-1">
-                                <h1 className="font-medium">{item.product.name}</h1>
-                                <span className="text-orange-500">{formatPriceWithDollar(item.product.price)}</span>
-                                <span className="text-gray-400 text-sm">Quantity: {item.quantity}</span>
+                                <h1 className="font-medium">{item?.product.name}</h1>
+                                <span className="text-orange-500">{formatPriceWithDollar(item?.product.price)}</span>
+                                <span className="text-gray-400 text-sm">Quantity: {item?.quantity}</span>
                                 <span className="text-gray-400 text-sm">Color: {item.color || "N/A"}</span>
                                 <div className="flex gap-2 items-center">
                                     <span className="text-gray-400 text-sm">Total:</span>
-                                    <span className="text-black text-lg">{formatPriceWithDollar(item.price)}</span>
+                                    <span className="text-black text-lg">{formatPriceWithDollar(item?.price)}</span>
                                 </div>
                                 <Trash2 className="absolute bottom-0 right-0 cursor-pointer hover:text-red-500"
                                     onClick={() => handleRemoveFromCart(item.product._id, user)}
@@ -49,7 +49,7 @@ function ListCart({ isOpenCart }){
                 </div>
                 <div className="flex justify-between p-2">
                     <h3>Subtotal</h3>
-                    <h3 className="font-medium">{formatPriceWithDollar(user?.cart.total)}</h3>
+                    <h3 className="font-medium">{formatPriceWithDollar(user?.cart?.total)}</h3>
                 </div>
                 <div className="flex justify-between p-2">
                     <h3>Shipping</h3>
@@ -57,7 +57,7 @@ function ListCart({ isOpenCart }){
                 </div>
                 <div className="flex justify-between p-2">
                     <h3 className="font-medium">Total</h3>
-                    <h3 className="text-green-500 text-lg font-medium">{formatPriceWithDollar(user?.cart.total)}</h3>   
+                    <h3 className="text-green-500 text-lg font-medium">{formatPriceWithDollar(user?.cart?.total)}</h3>   
                 </div>
                 <div className="flex justify-center mt-4 gap-2">
                     <Link to="/cart">

@@ -8,7 +8,7 @@ import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import Config from "../envVars";
 import axios from "axios";
-import useGetFeaturedCollection from "../hooks/useGetFeaturedCollections";
+import  {useGetFeaturedCollection } from "../hooks/useGetProduct";
 
 function DetailProductPage(){
     const { slug } = useParams()
@@ -50,7 +50,7 @@ function DetailProductPage(){
                 <div className="max-w-[86rem] mx-auto mt-4 py-4">
                     <h1 className="text-xl font-medium">Description</h1>
                     <div className="bg-white p-4 mt-2">
-                        <p className="text-gray-400 text-sm">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur nisi similique illum aut perferendis voluptas, quisquam obcaecati qui nobis officia. Voluptatibus in harum deleniti labore maxime officia esse eos? Repellat?</p>
+                        <p className="text-gray-400 text-sm">{detailProduct?.description}</p>
                     </div>
                 </div>
                 <div className="max-w-[86rem] mx-auto mt-4 py-4">

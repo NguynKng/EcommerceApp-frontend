@@ -469,6 +469,7 @@ function AddEditProduct() {
                                                     name="price"
                                                     id="price"
                                                     min="0"
+                                                    step={"any"}
                                                     value={generalForm.price}
                                                     onChange={handleChangeGeneralForm}
                                                 />

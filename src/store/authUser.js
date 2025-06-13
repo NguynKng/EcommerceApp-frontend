@@ -65,17 +65,14 @@ const useAuthStore = create((set) => ({
                 credentials,
                 { withCredentials: true }
             );
-            const { user, message } = response.data;
-
-            localStorage.setItem("user", JSON.stringify(user)); // ✅ Sync user after signup
-            set({ user, isSigningUp: false });
+            const { message } = response.data;
 
             toast.success(message);
-            return user; // ✅ Return full user object
+            return true; // ✅ Return full user object
         } catch (error) {
             set({ isSigningUp: false });
             toast.error(error.response?.data?.message || "An error occurred");
-            return null;
+            return false;
         }
     },
 

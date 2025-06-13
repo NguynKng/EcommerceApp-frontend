@@ -104,6 +104,7 @@ function ManageProduct() {
                     title: 'No.',
                     dataIndex: 'no',
                     key: 'no',
+                    width: "5rem",
                     align: 'center',
                     className: "text-lg"
                 },
@@ -132,6 +133,7 @@ function ManageProduct() {
                     title: 'Name',
                     dataIndex: 'name',
                     key: 'name',
+                    width: "20rem",
                     align: 'center',
                     className: "text-lg"
                 },
@@ -139,6 +141,7 @@ function ManageProduct() {
                     title: 'Category',
                     dataIndex: 'category',
                     key: 'category',
+                    width:"8rem",
                     align: 'center',
                     className: "text-lg"
                 },
@@ -146,6 +149,7 @@ function ManageProduct() {
                     title: 'Brand',
                     dataIndex: 'brand',
                     key: 'brand',
+                    width:"8rem",
                     align: 'center',
                     className: "text-lg"
                 },
@@ -174,7 +178,7 @@ function ManageProduct() {
                         </div>
                     ),
                     align: 'center',
-                    width: "16rem",
+                    width: "12rem",
                     className:"text-lg"
                 }
             ]
@@ -210,21 +214,24 @@ function ManageProduct() {
                 </div>
             </div>
             <h1 className="text-4xl font-medium text-center mt-4">Manage Product</h1>
-            <div className="relative w-40 border-2 border-gray-200 rounded-md mt-4">
-                <select className="size-full px-4 py-2 appearance-none" 
-                    name="productBrand" 
-                    id="productBrand"
-                    value={selectedCategory} 
-                    onChange={(e) => setSelectedCategory(e.target.value)}
-                >
-                    <option value="default">All</option>
-                    {categories.map((category) => (
-                        <option key={category._id} value={category.name}>{category.name}</option>
-                    ))}
-                </select>
-                <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none">
-                    <ChevronDown className="w-5 h-5 text-gray-600" />
+            <div className="flex items-center justify-between gap-2">
+                <div className="relative w-40 border-2 border-gray-200 rounded-md mt-4">
+                    <select className="size-full px-4 py-2 appearance-none" 
+                        name="productBrand" 
+                        id="productBrand"
+                        value={selectedCategory} 
+                        onChange={(e) => setSelectedCategory(e.target.value)}
+                    >
+                        <option value="default">All</option>
+                        {categories.map((category) => (
+                            <option key={category._id} value={category.name}>{category.name}</option>
+                        ))}
+                    </select>
+                    <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none">
+                        <ChevronDown className="w-5 h-5 text-gray-600" />
+                    </div>
                 </div>
+                <h2 className="text-xl font-medium">{`Total (${products?.length})`}</h2>
             </div>
             <ProductTable />
         </div>

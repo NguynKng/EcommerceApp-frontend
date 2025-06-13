@@ -1,11 +1,11 @@
-import { ChevronDown, Heart, RefreshCw, Search, ShoppingCart, UserRound, X } from "lucide-react"
+import { Bell, ChevronDown, CircleHelp, Heart, LayoutDashboard, LogOut, RefreshCw, Search, Settings, ShoppingCart, UserRound, X } from "lucide-react"
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom"
 import ListCart from "./ListCart";
 import axios from "axios"
 import Config from "../envVars"
 import toast from "react-hot-toast"
-import { productCategories } from "../utils/Data"
+import { productCategories } from "../utils/data/category"
 import useAuthStore from "../store/authUser";
 
 function Navbar() {
@@ -53,7 +53,7 @@ function Navbar() {
         <header className="max-w-full">
             <div className={`fixed inset-0 bg-black opacity-70 z-10 transition-opacity duration-300 ${isOpenCart ? 'visible opacity-70' : 'invisible opacity-0'}`} onClick={toggleCart}></div>
             <ListCart isOpenCart={isOpenCart} />
-            <X className={`fixed text-red-500 top-0 right-72 md:right-96 z-20   cursor-pointer 
+            <X className={`fixed text-red-500 top-0 right-72 md:right-96 z-20 cursor-pointer 
             transition-opacity duration-1000 ${isOpenCart ? 'visible opacity-100' : 'invisible opacity-0'}`} onClick={toggleCart} />
 
             <div className="border-b-2 border-gray-700 bg-black">
@@ -76,6 +76,7 @@ function Navbar() {
                                     <ChevronDown className="size-4" />
                                 </div>
                             </div>
+                            <Link className="text-white" to="/admin">Admin-site</Link>
                             {user && (
                                 <div className="relative group">
                                     {/* Avatar and Chevron */}
@@ -85,11 +86,17 @@ function Navbar() {
                                     </div>
                             
                                     {/* Dropdown Menu */}
-                                    <div className="absolute top-8 right-0 bg-black rounded-md opacity-0 invisible scale-95 transform transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:visible group-hover:scale-100 z-50">
+                                    <div className="absolute top-8 right-0 w-[16rem] bg-black rounded-md opacity-0 invisible scale-95 transform transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:visible group-hover:scale-100 z-50">
                                         <ul className="flex flex-col py-2 text-white">
-                                            <li className="px-4 py-2 hover:text-gray-500 cursor-pointer">Profile</li>
-                                            <li className="px-4 py-2 hover:text-gray-500 cursor-pointer">Settings</li>
-                                            <li className="px-4 py-2 hover:text-red-800 text-red-500 cursor-pointer" onClick={handleLogout}>Logout</li>
+                                            <h1 className="px-4">Welcome, {user?.fullName}</h1>
+                                            <hr className="my-2"></hr>
+                                            <li className="flex items-center gap-2 px-4 py-2 hover:text-gray-500 cursor-pointer"><UserRound className="text-gray-500" /> Account Details</li>
+                                            <li className="flex items-center gap-2 px-4 py-2 hover:text-gray-500 cursor-pointer"><LayoutDashboard className="text-gray-500" /> Integrations</li>
+                                            <li className="flex items-center gap-2 px-4 py-2 hover:text-gray-500 cursor-pointer"><Bell className="text-gray-500" /> Notifications</li>
+                                            <li className="flex items-center gap-2 px-4 py-2 hover:text-gray-500 cursor-pointer"><CircleHelp className="text-gray-500" /> Help Center</li>
+                                            <li className="flex items-center gap-2 px-4 py-2 hover:text-gray-500 cursor-pointer"><Settings className="text-gray-500" /> Settings</li>
+                                            <hr className="my-2"></hr>
+                                            <li className="flex items-center gap-2 px-4 py-2 hover:opacity-80 text-red-500 cursor-pointer" onClick={handleLogout}><LogOut className="text-red-500" /> Logout</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -130,7 +137,7 @@ function Navbar() {
                         )}
                         <Link className="relative" onClick={toggleCart}>
                             <ShoppingCart className="sm:size-8 size-6 text-yellow-600" />
-                            <div className="absolute top-0 right-0 -translate-y-1 translate-x-2 flex items-center justify-center p-2 bg-orange-500 size-4 rounded-full text-xs">{user?.cart?.items?.length}</div>
+                            <div className="absolute top-0 right-0 -translate-y-1 translate-x-2 flex items-center justify-center p-2 bg-orange-500 size-4 rounded-full text-xs">{user?.cart?.items?.length || 0}</div>
                         </Link>
                     </div>
                 </div>
@@ -148,8 +155,8 @@ function Navbar() {
                                     const matchedCategory = productCategories.find(cat => cat.name === category.name);
                                     const IconComponent = matchedCategory ? matchedCategory.icon : null;
                                     return (
-                                        <li key={index} className="py-3 px-2 text-center">
-                                            <Link to={`/` + category.name.toLowerCase()} className="hover:text-orange-400 flex items-center justify-center gap-2">
+                                        <li key={index} className="py-3 px-10 text-center">
+                                            <Link to={`/` + category.name.toLowerCase()} className="hover:text-orange-400 flex items-center gap-2">
                                                 {IconComponent && <IconComponent className="size-5" />} 
                                                 <span className="text-base">{category.name}</span>
                                             </Link>
